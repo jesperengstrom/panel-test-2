@@ -35,6 +35,7 @@
 </div>
 
 <style style="postcss">
+  @import 'tailwindcss';
   .app {
     grid-template-areas:
     'header header header' 
@@ -43,10 +44,10 @@
     grid-template-rows: var(--app-bar-height) auto;
 
     /* variant */
-    @media (width >= 48rem) { 
+    @variant md { 
       grid-template-areas:
-    'header header header' 
-    'leading-pane content trailing-panes';
+        'header header header' 
+        'leading-pane content trailing-panes';
     }
   }
 
