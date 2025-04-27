@@ -1,1 +1,6 @@
 @import 'tailwindcss';
+
+:root {
+  --app-bar-height: 70px;
+  --toolbar-height: 40px;
+}
