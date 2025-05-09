@@ -28,21 +28,23 @@
       </ol>
     </div>
   </section>
-  <section class="content grid bg-yellow-50">
-    <Toolbar />
-    <main class="main">
-      <div class="flex flex-col">
-        <a href="/?preview=1">add one right pane</a>
-        <a href="/?preview=1&preview=2">add two right panes</a>
-        <a href="/?preview=1&preview=2&preview=3">add three right panes</a>
-        <a href="/">remove all right panes</a>
-        <button onclick={() => leadingPaneClosed = !leadingPaneClosed}>Close left pane</button>
-      </div>
-      main
-    </main>
-    <aside class="aside bg-amber-100">aside</aside>
+  <section class="@container/content content-container grid bg-yellow-50">
+    <div class="content grid h-full grid-cols-1 @md:grid-cols-3">
+      <Toolbar />
+      <main class="main">
+        <div class="flex flex-col">
+          <a href="/?preview=1">add one right pane</a>
+          <a href="/?preview=1&preview=2">add two right panes</a>
+          <a href="/?preview=1&preview=2&preview=3">add three right panes</a>
+          <a href="/">remove all right panes</a>
+          <button class="flex" onclick={() => leadingPaneClosed = !leadingPaneClosed}>Close left pane</button>
+        </div>
+        main
+      </main>
+      <aside class="aside bg-amber-100">aside</aside>
+    </div>
   </section>
-  <section class="trailing-panes hidden md:block bg-blue-50">
+  <section class="trailing-panes hidden md:block bg-blue-50 grid-col">
     <Toolbar />
     trailing panes
   </section>
@@ -54,7 +56,7 @@
   .app {
     grid-template-areas:
     'header header header' 
-    'content content content';
+    'content-container content-container content-container';
 
     grid-template-rows: var(--app-bar-height) auto;
 
@@ -62,7 +64,7 @@
     @variant md { 
       grid-template-areas:
         'header header header' 
-        'leading-pane content trailing-panes';
+        'leading-pane content-container trailing-panes';
     }
   }
 
@@ -74,12 +76,26 @@
     grid-area: leading-pane;
   }
 
-  .content {
-    grid-area: content;
+  .content-container {
+    grid-area: content-container;
+  }
 
-    grid-template: 
-    'toolbar toolbar' var(--toolbar-height)
-    'main aside' auto / auto 250px
+  .content {
+    grid-template-columns: 1fr 1fr var(--aside-width);
+    grid-template-rows: var(--toolbar-height) 1fr 1fr;
+    grid-template-areas: 
+      'toolbar toolbar toolbar'
+      'main main main'
+      'aside aside aside';
+
+    @variant @5xl {
+      grid-template-areas: 
+      'toolbar toolbar toolbar'
+      'main main aside'
+      'main main aside';
+
+    }
+    
   }
 
   .trailing-panes {
