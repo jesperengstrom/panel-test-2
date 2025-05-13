@@ -1,21 +1,22 @@
 <script>
   import { getUserSettings } from '$lib/contexts/userSettings';
-  import { DEFAULT_LEFT_PANE_WIDTH, MIN_LEFT_PANE_WIDTH, MAX_LEFT_PANE_WIDTH } from '$lib/constants/constants';
-  import Draggable from "./Draggable.svelte";
-  import Toolbar from "./Toolbar.svelte";
+  import { DEFAULT_LEADING_PANE_WIDTH, MIN_LEADING_PANE_WIDTH, MAX_LEADING_PANE_WIDTH } from '$lib/constants/constants';
+  import Draggable from './Draggable.svelte';
+  import Toolbar from './Toolbar.svelte';
   const { isOpen } = $props();
   const userSettings = getUserSettings();
   
   let open = $state(isOpen);
-  let width = $state(userSettings?.leadingPane?.width || DEFAULT_LEFT_PANE_WIDTH);
+  let width = $state(userSettings?.leadingPane?.width || DEFAULT_LEADING_PANE_WIDTH);
 
   function onDragEnd() {
-    if (width <= MIN_LEFT_PANE_WIDTH) {
-      console.log('closing!')
-      open = false;
-      width = 0;
+    userSettings.setLeadingPaneWidth(Math.round(width));
+
+    if (width <= MIN_LEADING_PANE_WIDTH) {
+      console.log('should close!')
+      // open = false;
+      // width = 0;
     }
-    console.log('dragend', width)
   }
 </script>
 
@@ -38,8 +39,8 @@
   <Draggable 
     bind:width 
     side="right"
-    minWidth={MIN_LEFT_PANE_WIDTH}
-    maxWidth={MAX_LEFT_PANE_WIDTH}
+    minWidth={MIN_LEADING_PANE_WIDTH}
+    maxWidth={MAX_LEADING_PANE_WIDTH}
     {onDragEnd}
   />
 </section>

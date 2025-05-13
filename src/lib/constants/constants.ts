@@ -1,3 +1,3 @@
-export const DEFAULT_LEFT_PANE_WIDTH = 250;
-export const MAX_LEFT_PANE_WIDTH = 500;
-export const MIN_LEFT_PANE_WIDTH = 100;
+export const DEFAULT_LEADING_PANE_WIDTH = 250;
+export const MAX_LEADING_PANE_WIDTH = 500;
+export const MIN_LEADING_PANE_WIDTH = 100;
