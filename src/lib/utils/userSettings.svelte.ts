@@ -45,9 +45,10 @@ export class UserSettings {
 	// 	this.update('rightPane', rightPane);
 	// }
 
-	setLeadingPaneOpen(open: boolean) {
+	toggleLeadingPane() {
+		const newState = !this.settings?.leadingPane?.open
 		const leadingPane = { ...this.settings?.leadingPane };
-		leadingPane.open = open;
+		leadingPane.open = newState;
 		this.update('leadingPane', leadingPane);
 	}
 

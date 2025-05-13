@@ -5,25 +5,27 @@
    */
   type DraggableProps = {
     width: number;
-    // isDragging: boolean;
     minWidth: number;
     maxWidth: number;
     side: 'left' | 'right'
     onDragEnd: () => void;
+    isDragging?: boolean;
+    disable?: boolean;
   }
 
   let { 
     width = $bindable(0), 
-    // isDragging = $bindable(), 
+    isDragging = $bindable(false), 
     minWidth = 50, 
     maxWidth = 200,
     side = 'right',
-    onDragEnd 
+    onDragEnd,
+    disable = false
   }: DraggableProps = $props();
 
   function handlePointerDown(e: PointerEvent) {
     e.preventDefault();
-    // isDragging = true;
+    isDragging = true;
 
     const onPointerMove = (e: PointerEvent) => {
       if (e.clientX < 50) {
@@ -45,7 +47,7 @@
 
     const onPointerUp = () => {
       document.removeEventListener('pointermove', onPointerMove);
-      // isDragging = false;
+      isDragging = false;
       onDragEnd();
     };
 
@@ -74,7 +76,8 @@
 <button 
   class={[
     'draggable-btn absolute h-full w-4 cursor-col-resize top-0 -mx-2', 
-    side === 'left' ? 'left-0' : 'right-0'
+    side === 'left' ? 'left-0' : 'right-0',
+    disable && 'hidden pointer-events-none' 
     ]}
   aria-label="resize me" 
   onpointerdown={handlePointerDown}></button>

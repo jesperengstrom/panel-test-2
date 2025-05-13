@@ -3,13 +3,15 @@
   import Toolbar from "$lib/components/Toolbar.svelte";
   import LeadingPane from "$lib/components/LeadingPane.svelte";
   import TrailingPanes from "$lib/components/TrailingPanes.svelte";
+  import { getUserSettings } from "$lib/contexts/userSettings";
 
-  let leadingPaneOpen = $state(true);
+  const userSettings = getUserSettings();
+
 </script>
 
 <div class="app grid min-h-screen max-w-screen overflow-x-hidden">
   <AppBar />
-  <LeadingPane isOpen={leadingPaneOpen} />
+  <LeadingPane />
   <section class="@container/content content-container grid bg-yellow-50">
     <div class="content grid h-full grid-cols-1 @md/content:grid-cols-3">
       <Toolbar />
@@ -22,7 +24,7 @@
           <a href="/?preview=1&preview=2">add two right panes</a>
           <a href="/?preview=1&preview=2&preview=3">add three right panes</a>
           <a href="/">remove all right panes</a>
-          <button class="flex" onclick={() => leadingPaneOpen = !leadingPaneOpen}>Close left pane</button>
+          <button class="flex" onclick={() => userSettings.toggleLeadingPane()}>Toggle left pane</button>
         </div>
       </main>
       <aside class="aside bg-amber-100 p-2">
