@@ -1,30 +1,42 @@
 <script lang="ts">
+  /**
+   * Create a drag handle by adding this component inside a relative positioned element 
+   * and pass the 'side' you want to be able to resize. Set bindable 'width' to container.
+   */
   type DraggableProps = {
-    children: any;
+    width: number;
+    // isDragging: boolean;
+    minWidth: number;
+    maxWidth: number;
     side: 'left' | 'right'
+    onDragEnd: () => void;
   }
-  let { children, side }: DraggableProps = $props();
-  let isDragging = false;
-  let width = $state(200);
-  let minWidth = 50;
-  let maxWidth = 500;
-  let onDragEnd = () => {};
+
+  let { 
+    width = $bindable(0), 
+    // isDragging = $bindable(), 
+    minWidth = 50, 
+    maxWidth = 200,
+    side = 'right',
+    onDragEnd 
+  }: DraggableProps = $props();
 
   function handlePointerDown(e: PointerEvent) {
     e.preventDefault();
-    isDragging = true;
+    // isDragging = true;
 
     const onPointerMove = (e: PointerEvent) => {
       if (e.clientX < 50) {
         // isOpen = false;
-        width = 0;
+        // width = 0;
+        console.log('should collapse')
       } else {
         // isOpen = true
       }
 
-      let pos = 0;
       if (side === 'right') {
         width = Math.min(Math.max(e.clientX, minWidth), maxWidth);
+
       }
       if (side === 'left') {
         width = Math.min(Math.max(document.body.clientWidth - e.clientX, minWidth), maxWidth);
@@ -33,7 +45,7 @@
 
     const onPointerUp = () => {
       document.removeEventListener('pointermove', onPointerMove);
-      isDragging = false;
+      // isDragging = false;
       onDragEnd();
     };
 
@@ -43,7 +55,7 @@
 
 </script>
 
-{#snippet button()}
+<!-- {#snippet button()}
   <button class="draggable-btn relative w-4 cursor-col-resize -mx-2" aria-label="resize me" onpointerdown={handlePointerDown}></button>
 {/snippet}
 
@@ -57,13 +69,20 @@
   {#if side === 'right'}
     {@render button()}
   {/if}
-</div>
+</div> -->
+
+<button 
+  class={[
+    'draggable-btn absolute h-full w-4 cursor-col-resize top-0 -mx-2', 
+    side === 'left' ? 'left-0' : 'right-0'
+    ]}
+  aria-label="resize me" 
+  onpointerdown={handlePointerDown}></button>
 
 <style lang="postcss">
   @reference 'tailwindcss';
 
   .draggable-btn {
-
     &::before {
       width: 1px;
       height: auto;
