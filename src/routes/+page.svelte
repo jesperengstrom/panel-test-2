@@ -4,6 +4,7 @@
   import LeadingPane from "$lib/components/LeadingPane.svelte";
   import TrailingPanes from "$lib/components/TrailingPanes.svelte";
   import { getUserSettings } from "$lib/contexts/userSettings";
+  import { fade } from "svelte/transition";
 
   const userSettings = getUserSettings();
 
@@ -17,7 +18,7 @@
       <Toolbar>
         {#snippet leadingActions()}
           {#if !userSettings.leadingPane?.open}
-            <button onclick={() => userSettings.toggleLeadingPane()}>➡️</button>
+            <button in:fade={{ duration: 150 }} onclick={() => userSettings.toggleLeadingPane()}>➡️</button>
           {/if}
         {/snippet}
       </Toolbar>
