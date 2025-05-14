@@ -3,6 +3,7 @@
   import { LEADING_PANE_DEFAULT_WIDTH, LEADING_PANE_MIN_WIDTH, LEADING_PANE_MAX_WIDTH, LEADING_PANE_COLLAPSE_WIDTH } from '$lib/constants/constants';
   import Draggable from './Draggable.svelte';
   import Toolbar from './Toolbar.svelte';
+  import PaneContent from './PaneContent.svelte';
   const userSettings = getUserSettings();
   
   let width = $state(userSettings?.leadingPane?.width || LEADING_PANE_DEFAULT_WIDTH);
@@ -29,15 +30,10 @@
         <button onclick={() => userSettings.toggleLeadingPane()}>⬅️</button>
       {/snippet}
     </Toolbar>
-    <div class={['absolute w-full transition-transform p-2', paneOpen ? 'translate-x-0' : '-translate-x-full']}>
+    <div class={['leading-pane-content absolute w-full overflow-x-auto transition-transform p-2', paneOpen ? 'translate-x-0' : '-translate-x-full']}>
       <p class="font-bold">leading pane</p>
       <ol class="whitespace-nowrap [&_li]:overflow-hidden [&_li]:overflow-ellipsis">
-        <li>leading paneleading paneleading paneleading paneleading paneleading pane</li>
-        <li>leading paneleading paneleading paneleading paneleading paneleading pane</li>
-        <li>leading paneleading paneleading paneleading paneleading paneleading pane</li>
-        <li>leading paneleading paneleading paneleading paneleading paneleading pane</li>
-        <li>leading paneleading paneleading paneleading paneleading paneleading pane</li>
-        <li>leading paneleading paneleading paneleading paneleading paneleading pane</li>
+        <PaneContent />
       </ol>
     </div>
   <!-- </div> -->
@@ -57,6 +53,11 @@
 <style>
   .leading-pane {
     grid-area: leading-pane;
+  }
+
+  .leading-pane-content {
+    max-height: calc(100% - var(--toolbar-height));
+    scrollbar-width: thin;
   }
 </style>
 
