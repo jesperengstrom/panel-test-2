@@ -47,7 +47,7 @@
 
   .app {
     grid-template-rows: var(--app-bar-height) auto;
-    grid-template-columns: minmax(0px, max-content) auto minmax(0px, max-content);
+    grid-template-columns: minmax(0px, min-content) auto minmax(0px, min-content);
     grid-template-areas:
     'app-bar app-bar app-bar' 
     'content-container content-container content-container';
