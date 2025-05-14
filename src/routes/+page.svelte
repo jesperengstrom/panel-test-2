@@ -14,7 +14,13 @@
   <LeadingPane />
   <section class="@container/content content-container grid bg-yellow-50">
     <div class="content grid h-full grid-cols-1 @md/content:grid-cols-3">
-      <Toolbar />
+      <Toolbar>
+        {#snippet leadingActions()}
+          {#if !userSettings.leadingPane?.open}
+            <button onclick={() => userSettings.toggleLeadingPane()}>➡️</button>
+          {/if}
+        {/snippet}
+      </Toolbar>
       <main class="main p-2">
         <div class="flex flex-col">
           <span class="font-bold">

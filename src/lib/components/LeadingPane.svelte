@@ -24,7 +24,11 @@
     paneOpen && 'opacity-100']}
   style="width:{paneOpen ? width : 0}px">
   <!-- <div class="relative overflow-x-hidden h-full"> -->
-    <Toolbar />
+    <Toolbar>
+      {#snippet trailingActions()}
+        <button onclick={() => userSettings.toggleLeadingPane()}>⬅️</button>
+      {/snippet}
+    </Toolbar>
     <div class={['absolute w-full transition-transform p-2', paneOpen ? 'translate-x-0' : '-translate-x-full']}>
       <p class="font-bold">leading pane</p>
       <ol class="whitespace-nowrap [&_li]:overflow-hidden [&_li]:overflow-ellipsis">

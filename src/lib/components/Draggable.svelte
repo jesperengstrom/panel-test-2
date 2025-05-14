@@ -63,7 +63,6 @@
     document.addEventListener('pointermove', throttledOnPointerMove);
     document.addEventListener('pointerup', onPointerUp, { once: true });
   }
-
 </script>
 
 <!-- https://www.w3.org/WAI/ARIA/apg/patterns/windowsplitter/ -->
