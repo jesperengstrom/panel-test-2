@@ -1,22 +1,20 @@
 <script>
   import { getUserSettings } from '$lib/contexts/userSettings';
-  import { DEFAULT_LEADING_PANE_WIDTH, MIN_LEADING_PANE_WIDTH, MAX_LEADING_PANE_WIDTH } from '$lib/constants/constants';
+  import { LEADING_PANE_DEFAULT_WIDTH, LEADING_PANE_MIN_WIDTH, LEADING_PANE_MAX_WIDTH, LEADING_PANE_COLLAPSE_WIDTH } from '$lib/constants/constants';
   import Draggable from './Draggable.svelte';
   import Toolbar from './Toolbar.svelte';
   const userSettings = getUserSettings();
   
-  let width = $state(userSettings?.leadingPane?.width || DEFAULT_LEADING_PANE_WIDTH);
+  let width = $state(userSettings?.leadingPane?.width || LEADING_PANE_DEFAULT_WIDTH);
   let isDragging = $state(false);
   const paneOpen = $derived(userSettings.leadingPane?.open);
 
   function onDragEnd() {
-    userSettings.setLeadingPaneWidth(Math.round(width));
+    userSettings.setLeadingPaneWidth(width);
+  }
 
-    // if (width <= MIN_LEADING_PANE_WIDTH) {
-    
-    //   console.log('should close!')
-    //   userSettings.toggleLeadingPane();
-    // }
+  function onCollapseWidth() {
+    userSettings.toggleLeadingPane();
   }
 </script>
 
@@ -40,13 +38,15 @@
     </div>
   <!-- </div> -->
     <Draggable 
-      side="right"
       bind:width
+      side="right"
+      minWidth={LEADING_PANE_MIN_WIDTH}
+      maxWidth={LEADING_PANE_MAX_WIDTH}
+      collapseWidth={LEADING_PANE_COLLAPSE_WIDTH}
       bind:isDragging
-      minWidth={MIN_LEADING_PANE_WIDTH}
-      maxWidth={MAX_LEADING_PANE_WIDTH}
+      disabled={!paneOpen}
       {onDragEnd}
-      disable={!paneOpen}
+      {onCollapseWidth}
     />
 </section>
 
