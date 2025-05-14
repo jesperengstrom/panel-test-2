@@ -29,6 +29,8 @@
     onCollapseWidth
   }: DraggableProps = $props();
 
+  const throttleTime = 25;
+
   function handlePointerDown(e: PointerEvent) {
 
     e.preventDefault();
@@ -58,7 +60,7 @@
       onDragEnd?.();
     };
 
-    const throttledOnPointerMove = throttle(onPointerMove, 50);
+    const throttledOnPointerMove = throttle(onPointerMove, throttleTime);
 
     document.addEventListener('pointermove', throttledOnPointerMove);
     document.addEventListener('pointerup', onPointerUp, { once: true });

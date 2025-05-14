@@ -55,7 +55,7 @@
 <style>
   .leading-pane {
     grid-area: leading-pane;
-    max-height: calc(100vh - var(--toolbar-height));
+    max-height: calc(100vh - var(--app-bar-height));
   }
 
   .leading-pane-content {
