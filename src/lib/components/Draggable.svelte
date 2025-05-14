@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { throttle } from "$lib/utils/throttle";
+
   /**
    * Create a drag handle by adding this component inside a relative positioned element 
    * and pass the 'side' you want to be able to resize. Set bindable 'width' to container.
@@ -28,7 +30,7 @@
     isDragging = true;
 
     const onPointerMove = (e: PointerEvent) => {
-      if (e.clientX < 50) {
+      if (e.clientX < minWidth) {
         // isOpen = false;
         // width = 0;
         console.log('should collapse')
@@ -37,41 +39,27 @@
       }
 
       if (side === 'right') {
-        width = Math.min(Math.max(e.clientX, minWidth), maxWidth);
+        width = Math.round(Math.min(Math.max(e.clientX, minWidth), maxWidth));
 
       }
       if (side === 'left') {
-        width = Math.min(Math.max(document.body.clientWidth - e.clientX, minWidth), maxWidth);
+        width = Math.round(Math.min(Math.max(document.body.clientWidth - e.clientX, minWidth), maxWidth));
       }
     };
 
     const onPointerUp = () => {
-      document.removeEventListener('pointermove', onPointerMove);
+      document.removeEventListener('pointermove', throttledOnPointerMove);
       isDragging = false;
       onDragEnd();
     };
 
-    document.addEventListener('pointermove', onPointerMove);
+    const throttledOnPointerMove = throttle(onPointerMove, 50);
+
+    document.addEventListener('pointermove', throttledOnPointerMove);
     document.addEventListener('pointerup', onPointerUp, { once: true });
   }
 
 </script>
-
-<!-- {#snippet button()}
-  <button class="draggable-btn relative w-4 cursor-col-resize -mx-2" aria-label="resize me" onpointerdown={handlePointerDown}></button>
-{/snippet}
-
-<div class="draggable flex h-full items-stretch">
-  {#if side == 'left'}
-    {@render button()}
-  {/if}
-  <div class="flex-1" style="width:{width}px">
-    {@render children()}
-  </div>
-  {#if side === 'right'}
-    {@render button()}
-  {/if}
-</div> -->
 
 <button 
   class={[
@@ -108,7 +96,7 @@
       top: 0px;
       bottom: 0px;
       left: 0;
-      right: 0;
+      right: -1px;
     }
 
     &:hover::after {

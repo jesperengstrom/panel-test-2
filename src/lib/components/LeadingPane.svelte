@@ -12,11 +12,11 @@
   function onDragEnd() {
     userSettings.setLeadingPaneWidth(Math.round(width));
 
-    if (width <= MIN_LEADING_PANE_WIDTH) {
-      console.log('should close!')
-      // open = false;
-      // width = 0;
-    }
+    // if (width <= MIN_LEADING_PANE_WIDTH) {
+    
+    //   console.log('should close!')
+    //   userSettings.toggleLeadingPane();
+    // }
   }
 </script>
 
