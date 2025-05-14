@@ -66,14 +66,23 @@
 
 </script>
 
-<button 
+<!-- https://www.w3.org/WAI/ARIA/apg/patterns/windowsplitter/ -->
+<!-- https://github.com/w3c/aria-practices/issues/130#issuecomment-2301520761 -->
+<div 
   class={[
     'draggable-btn absolute h-full w-4 cursor-col-resize top-0 -mx-2', 
     side === 'left' ? 'left-0' : 'right-0',
     disabled && 'hidden pointer-events-none' 
     ]}
-  aria-label="resize me" 
-  onpointerdown={handlePointerDown}></button>
+  tabindex="0"
+  aria-label="resize me"
+  role="slider"
+  aria-valuenow={width}
+  aria-valuemin={minWidth}
+  aria-valuemax={maxWidth}
+  aria-orientation="vertical"
+  aria-controls="something"
+  onpointerdown={handlePointerDown}></div>
 
 <style lang="postcss">
   @reference 'tailwindcss';
