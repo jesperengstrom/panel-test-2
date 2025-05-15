@@ -18,7 +18,7 @@
       <Toolbar>
         {#snippet leadingActions()}
           {#if !userSettings.leadingPane?.open}
-            <button in:fade={{ duration: 150 }} onclick={() => userSettings.toggleLeadingPane()}>➡️</button>
+            <button class="hidden md:block" in:fade={{ duration: 200 }} onclick={() => userSettings.toggleLeadingPane()}>➡️</button>
           {/if}
         {/snippet}
       </Toolbar>

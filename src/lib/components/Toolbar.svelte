@@ -9,9 +9,9 @@ type ToolbarProps = {
 let { leadingActions, trailingActions }: ToolbarProps = $props();
 </script>
 
-<nav class="toolbar p-2 bg-white border border-gray-200 border-r-0 h-(--toolbar-height)">
+<nav class="toolbar bg-white border border-gray-200 border-r-0 h-(--toolbar-height)">
   <!-- <span class="text-xs text-gray-500 float-end">toolbar</span> -->
-  <ul class="grid">
+  <ul class="grid p-2">
     {#if leadingActions}
       <li class="justify-self-start">
         {@render leadingActions()}
