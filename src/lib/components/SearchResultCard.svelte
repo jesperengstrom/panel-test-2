@@ -13,6 +13,7 @@
   <div class="w-full flex flex-col items-center gap-2 @sm/card:flex-row">
     <div class="size-20 bg-green-500 @xl/card:bg-pink-500 @xl/card:rounded-full"></div>
     <div>
+      <span>click me</span>
       <span class="hidden @xl/card:block">Im a wide card</span>
       <span class="block @xl/card:hidden">Im a narrow card</span>
       <span>{id}</span>
