@@ -20,14 +20,14 @@
 </script>
 
 <section class={[
-    'leading-pane relative hidden md:block h-full bg-gray-100 motion-reduce:transition-none',
+    'leading-pane relative hidden md:block bg-gray-100',
     // Enable transition for the collapse animation. But disable it while resizing the panel!
-    !isDragging && 'transition-[padding] duration-200', 
+    !isDragging && 'transition-[padding] duration-200 motion-reduce:transition-none', 
     ]}
     style="padding-right:{paneOpen ? width : 0}px"
   >
-  <div class={['absolute flex flex-col motion-reduce:transition-none',
-      !isDragging && 'transition-transform duration-200',
+  <div class={['absolute h-full flex flex-col',
+      !isDragging && 'transition-transform duration-200 motion-reduce:transition-none',
       paneOpen ? 'translate-x-0' : '-translate-x-full'
     ]} 
     style="width:{width}px">
