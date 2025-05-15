@@ -30,7 +30,7 @@
   }: DraggableProps = $props();
 
   let dragHandle: HTMLDivElement | undefined = $state();
-  let parentRect = $derived(dragHandle?.parentElement?.getBoundingClientRect());
+  let parent = $derived(dragHandle?.parentElement);
   const throttleTime = 25;
 
   function handlePointerDown(e: PointerEvent) {
@@ -38,14 +38,13 @@
     isDragging = true;
 
     const onPointerMove = (e: PointerEvent) => {
-      if (disabled || !parentRect) {
+      if (disabled || !parent) {
         return;
       }
 
+      const parentRect = parent.getBoundingClientRect();
       const parentStart = side === 'right' ? parentRect?.left : parentRect?.right;
       const distance = Math.round(side === 'right' ? e.clientX - parentStart : parentStart - e.clientX);
-
-      console.log(distance);
 
       if (collapseWidth && distance < collapseWidth) {
         onCollapseWidth?.();

@@ -23,7 +23,7 @@
         {/snippet}
       </Toolbar>
       <main class="main p-2">
-        <div class="flex flex-col">
+        <div class="flex flex-col items-start">
           <span class="font-bold">
             main
           </span>
