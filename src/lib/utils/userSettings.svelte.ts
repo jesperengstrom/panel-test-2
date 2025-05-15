@@ -9,8 +9,16 @@ enum availableSettings {
 export class UserSettings {
 	private settings: UserSettingsType = $state({});
 
-	constructor(settings: UserSettingsType) {
+	constructor(settings: UserSettingsType = { leadingPane: { open: true }}) {
 		this.settings = settings;
+
+		// set default
+		if (!settings?.hasOwnProperty('leadingPane')) {
+			this.settings = {
+				...this.settings,
+				...{ leadingPane: { open: true } }
+			}
+		}
 	}
 
 	private update(setting: keyof typeof availableSettings, v: any) {
