@@ -5,8 +5,16 @@
   import TrailingPanes from "$lib/components/TrailingPanes.svelte";
   import { getUserSettings } from "$lib/contexts/userSettings";
   import { fade } from "svelte/transition";
+  import SearchResultCard from "$lib/components/SearchResultCard.svelte";
 
   const userSettings = getUserSettings();
+  const searchResults = [
+    { id: 43434 },
+    { id: 34534 },
+    { id: 15777 },
+    { id: 67867 },
+    { id: 23537 },
+  ]
 
 </script>
 
@@ -23,19 +31,17 @@
         {/snippet}
       </Toolbar>
       <main class="main p-2">
-        <div class="flex flex-col items-start">
-          <span class="font-bold">
+        <div class="flex flex-col gap-2 items-start">
+          <span class="text-xs text-gray-500">
             main
           </span>
-          <a href="/?preview=1">add one right pane</a>
-          <a href="/?preview=1&preview=2">add two right panes</a>
-          <a href="/?preview=1&preview=2&preview=3">add three right panes</a>
-          <a href="/">remove all right panes</a>
-          <button class="flex" onclick={() => userSettings.toggleLeadingPane()}>Toggle left pane</button>
+          {#each searchResults as searchResult}
+          <SearchResultCard id={searchResult.id} />
+          {/each}
         </div>
       </main>
       <aside class="aside bg-amber-100 p-2">
-        <p class="p-2">aside</p>
+        <p class="text-xs text-gray-500">aside</p>
       </aside>
     </div>
   </section>

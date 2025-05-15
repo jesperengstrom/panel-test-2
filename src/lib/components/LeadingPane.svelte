@@ -38,7 +38,7 @@
     </Toolbar>
     <div class="pr-1.5 overflow-hidden">
       <div class="leading-pane-content h-full overflow-x-auto p-2">
-        <p class="font-bold">leading pane</p>
+        <p class="text-xs text-gray-500 mb-2">leading pane</p>
         <ol class="whitespace-nowrap [&_li]:overflow-hidden [&_li]:overflow-ellipsis">
           <PaneContent />
         </ol>

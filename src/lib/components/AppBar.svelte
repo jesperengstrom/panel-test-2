@@ -1,4 +1,8 @@
-<header class="app-bar bg-green-100 p-2">appBar</header>
+<header class="app-bar bg-green-100 p-2">
+  <span class="text-xs text-gray-500">
+    appBar
+  </span>
+</header>
 
 <style>
 
