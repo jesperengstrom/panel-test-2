@@ -2,8 +2,8 @@
   import { throttle } from "$lib/utils/throttle";
 
   /**
-   * Create a drag handle by adding this component inside a relative positioned element 
-   * and pass the 'side' you want to be able to resize. Set bindable 'width' to container.
+   * Create a resizable panel by adding this component inside a relative positioned element 
+   * and pass the 'side' you want to add the drag handle to. Use bindable 'width' to set parent size.
    */
   type DraggableProps = {
     width: number;
@@ -20,8 +20,8 @@
   let { 
     width = $bindable(0), 
     isDragging = $bindable(false), 
-    minWidth = 50, 
-    maxWidth = 200,
+    minWidth = 200, 
+    maxWidth = 400,
     collapseWidth,
     side = 'right',
     disabled = false,
@@ -29,29 +29,29 @@
     onCollapseWidth
   }: DraggableProps = $props();
 
+  let dragHandle: HTMLDivElement | undefined = $state();
+  let parentRect = $derived(dragHandle?.parentElement?.getBoundingClientRect());
   const throttleTime = 25;
 
   function handlePointerDown(e: PointerEvent) {
-
     e.preventDefault();
     isDragging = true;
 
     const onPointerMove = (e: PointerEvent) => {
-      if (disabled) {
+      if (disabled || !parentRect) {
         return;
       }
 
-      if (side === 'right') {
-        if (collapseWidth && e.clientX < collapseWidth) {
-          onCollapseWidth?.();
-          return;
-        }
-        width = Math.round(Math.min(Math.max(e.clientX, minWidth), maxWidth));
+      const parentStart = side === 'right' ? parentRect?.left : parentRect?.right;
+      const distance = Math.round(side === 'right' ? e.clientX - parentStart : parentStart - e.clientX);
 
+      console.log(distance);
+
+      if (collapseWidth && distance < collapseWidth) {
+        onCollapseWidth?.();
+        return;
       }
-      if (side === 'left') {
-        width = Math.round(Math.min(Math.max(document.body.clientWidth - e.clientX, minWidth), maxWidth));
-      }
+      width = Math.round(Math.min(Math.max(distance, minWidth), maxWidth));
     };
 
     const onPointerUp = () => {
@@ -69,7 +69,8 @@
 
 <!-- https://www.w3.org/WAI/ARIA/apg/patterns/windowsplitter/ -->
 <!-- https://github.com/w3c/aria-practices/issues/130#issuecomment-2301520761 -->
-<div 
+<div
+  bind:this={dragHandle}
   class={[
     'draggable-btn absolute h-full w-4 cursor-col-resize top-0 -mx-2', 
     side === 'left' ? 'left-0' : 'right-0',

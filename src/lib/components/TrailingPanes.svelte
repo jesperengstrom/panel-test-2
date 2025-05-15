@@ -1,7 +1,11 @@
 <script>
   import { page } from "$app/state";
-  import Draggable from "./Draggable.svelte";
-  import Toolbar from "./Toolbar.svelte";
+  import TrailingPane from "./TrailingPane.svelte";
+
+  const trailingPanes = $derived(page.url.searchParams.getAll('preview'));
+  const MAX_TRAILING_PANES = 3
+
+  $inspect(trailingPanes)
 
   const trailingPaneWidth = $derived.by(() => {
     let numberOfTrailingPanes = page.url.searchParams.getAll('preview').length;
@@ -9,12 +13,12 @@
   })
 </script>
 
-<section class="trailing-panes hidden md:block bg-blue-50 grid-col" style="width:{trailingPaneWidth}px">
-  <!-- <Draggable side="left" /> -->
-  <Toolbar />
-  <div class="p-2">
-    <p class="font-bold">trailing panes</p>
-  </div>
+<section class="trailing-panes hidden md:flex bg-blue-50">
+  {#each trailingPanes as trailingPane, index (index)}
+    {#if index < MAX_TRAILING_PANES }
+      <TrailingPane id={trailingPane} />
+    {/if}
+  {/each}
 </section>
 
 <style>
