@@ -4,6 +4,7 @@
   import { getUserSettings } from "$lib/contexts/userSettings";
   import Draggable from "./Draggable.svelte";
   import Toolbar from "./Toolbar.svelte";
+  import TrailingPaneContent from "./TrailingPaneContent.svelte";
 
   const { id } = $props();
   const userSettings = getUserSettings();
@@ -19,7 +20,7 @@
   });
 </script>
 
-<div class="trailing-pane bg-gray-100 relative flex flex-col" style="width:{width}px">
+<div class="trailing-pane relative flex flex-col bg-gray-100" style="width:{width}px">
   <Toolbar>
     {#snippet trailingActions()}
     <a href={removeLink} class="block ml-auto">
@@ -27,13 +28,21 @@
     </a>
     {/snippet}
   </Toolbar>
-  <div class="p-2 text-center">
-    <p>Hi! {id}</p>
+  <div class="pr-1.5 overflow-hidden">
+    <div class="trailing-pane-content h-full overflow-x-auto">
+      <TrailingPaneContent {id} />
+    </div>
   </div>
   <Draggable 
     bind:width
     side="left"
     minWidth={TRAILING_PANE_MIN_WIDTH}
     maxWidth={TRAILING_PANE_MAX_WIDTH}
-/>
+  />
 </div>
+
+<style>
+  .trailing-pane-content {
+    scrollbar-width: thin;
+  }
+</style>

@@ -21,7 +21,7 @@
 <div class="app grid min-h-screen max-w-screen overflow-x-hidden">
   <AppBar />
   <LeadingPane />
-  <section class="@container/content content-container grid bg-yellow-50">
+  <section class="@container/content content-container grid bg-white">
     <div class="content grid h-full grid-cols-1 @md/content:grid-cols-3">
       <Toolbar>
         {#snippet leadingActions()}

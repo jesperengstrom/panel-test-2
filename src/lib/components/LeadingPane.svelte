@@ -3,7 +3,7 @@
   import { LEADING_PANE_DEFAULT_WIDTH, LEADING_PANE_MIN_WIDTH, LEADING_PANE_MAX_WIDTH, LEADING_PANE_COLLAPSE_WIDTH } from '$lib/constants/constants';
   import Draggable from './Draggable.svelte';
   import Toolbar from './Toolbar.svelte';
-  import PaneContent from './PaneContent.svelte';
+  import LeadingPaneContent from './LeadingPaneContent.svelte';
   const userSettings = getUserSettings();
   
   let width = $state(userSettings?.leadingPane?.width || LEADING_PANE_DEFAULT_WIDTH);
@@ -40,7 +40,7 @@
       <div class="leading-pane-content h-full overflow-x-auto p-2">
         <p class="text-xs text-gray-500 mb-2">leading pane</p>
         <ol class="whitespace-nowrap [&_li]:overflow-hidden [&_li]:overflow-ellipsis">
-          <PaneContent />
+          <LeadingPaneContent />
         </ol>
       </div>
     </div>

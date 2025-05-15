@@ -9,7 +9,7 @@ type ToolbarProps = {
 let { leadingActions, trailingActions }: ToolbarProps = $props();
 </script>
 
-<nav class="toolbar bg-white border border-gray-200 border-r-0 h-(--toolbar-height)">
+<nav class="toolbar bg-white border border-gray-200 border-r-0">
   <!-- <span class="text-xs text-gray-500 float-end">toolbar</span> -->
   <ul class="grid p-2">
     {#if leadingActions}
@@ -28,5 +28,7 @@ let { leadingActions, trailingActions }: ToolbarProps = $props();
 <style>
   .toolbar {
     grid-area: toolbar;
+    min-height: var(--toolbar-height);
+    height: var(--toolbar-height);
   }
 </style>

@@ -9,7 +9,7 @@
   });
 </script>
 
-<a href={link} class="@container/card flex w-full bg-white p-2" aria-label="{id}">
+<a href={link} class="@container/card flex w-full bg-white p-2 border-t border-t-gray-200" aria-label="{id}">
   <div class="w-full flex flex-col items-center gap-2 @sm/card:flex-row">
     <div class="size-20 bg-green-500 @xl/card:bg-pink-500 @xl/card:rounded-full"></div>
     <div>
