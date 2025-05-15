@@ -20,11 +20,11 @@
 </script>
 
 <section class={[
-    'leading-pane relative hidden md:flex flex-col h-full bg-gray-100 opacity-0',
-    !isDragging && 'transition-all',
-    paneOpen ? 'translate-x-0 opacity-100' : '-translate-x-full']}
+    'leading-pane relative hidden md:flex flex-col h-full bg-gray-100 motion-reduce:transition-none',
+    // Enable width transition for the collapse animation. But disable it while resizing the panel!
+    (!isDragging || width === LEADING_PANE_MIN_WIDTH) && 'leading-pane-transition', 
+    paneOpen ? 'pane-open' : 'pane-closed']}
   style="width:{paneOpen ? width : 0}px">
-  <!-- <div class="relative overflow-x-hidden h-full"> -->
     <Toolbar>
       {#snippet trailingActions()}
         <button onclick={() => userSettings.toggleLeadingPane()}>⬅️</button>
@@ -38,7 +38,6 @@
         </ol>
       </div>
     </div>
-  <!-- </div> -->
     <Draggable 
       bind:width
       side="right"
@@ -52,10 +51,27 @@
     />
 </section>
 
-<style>
+<style lang="postcss">
   .leading-pane {
     grid-area: leading-pane;
     max-height: calc(100vh - var(--app-bar-height));
+
+    &.pane-open {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    
+    &.pane-closed {
+      opacity: 1;
+      transform: translateX(-100%);
+    }
+    
+    /* transition only the properties used in animation, else pane will 
+    'transition' during viewport resize for example */
+    &.leading-pane-transition {
+      transition-property: transform, width, opacity;
+      transition-duration: 200ms;
+    }
   }
 
   .leading-pane-content {
