@@ -72,18 +72,19 @@
   }
 
   .content {
-    grid-template-columns: 1fr 1fr var(--aside-width);
-    grid-template-rows: var(--toolbar-height) 1fr 1fr;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    grid-template-rows: var(--toolbar-height) auto minmax(var(--aside-height), auto);
     grid-template-areas: 
-      'toolbar toolbar toolbar'
-      'main main main'
-      'aside aside aside';
-
+    'toolbar'
+    'main'
+    'aside';
+    
     @variant @5xl/content {
+      grid-template-columns: 1fr var(--aside-width);
+      grid-template-rows: var(--toolbar-height) auto;
       grid-template-areas: 
-      'toolbar toolbar toolbar'
-      'main main aside'
-      'main main aside';
+      'toolbar toolbar'
+      'main aside';
     }
   }
 
