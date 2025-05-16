@@ -25,6 +25,7 @@
     !isDragging && 'transition-[padding] duration-200 motion-reduce:transition-none', 
     ]}
     style="padding-right:{paneOpen ? width : 0}px"
+    inert={!paneOpen}
   >
   <div class={['absolute h-full flex flex-col',
       !isDragging && 'transition-transform duration-200 motion-reduce:transition-none',
@@ -33,7 +34,7 @@
     style="width:{width}px">
     <Toolbar>
       {#snippet trailingActions()}
-        <button onclick={() => userSettings.toggleLeadingPane()}>⬅️</button>
+        <button id="close-leading-pane-btn" onclick={() => userSettings.toggleLeadingPane()}>⬅️</button>
       {/snippet}
     </Toolbar>
     <div class="pr-1.5 overflow-hidden">

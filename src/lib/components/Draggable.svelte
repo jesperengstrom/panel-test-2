@@ -85,6 +85,7 @@
     side === 'left' ? 'left-0' : 'right-0',
     disabled && 'hidden pointer-events-none' 
   ]}
+  aria-disabled={disabled}
   tabindex="0"
   aria-label="resize me"
   role="slider"

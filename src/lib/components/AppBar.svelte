@@ -2,7 +2,6 @@
   <span class="text-xs text-gray-500">
     appBar
   </span>
-  <a class="block" href="/find">Navigate away</a>
 </header>
 
 <style>
