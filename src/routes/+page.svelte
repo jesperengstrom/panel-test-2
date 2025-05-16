@@ -21,8 +21,8 @@
 <div class="app grid min-h-screen max-w-screen overflow-x-hidden">
   <AppBar />
   <LeadingPane />
-  <section class="@container/content content-container grid bg-white">
-    <div class="content grid h-full grid-cols-1 @md/content:grid-cols-3">
+  <section class="@container/content content-container grid overflow-hidden bg-white">
+    <div class="content grid h-full overflow-x-auto grid-cols-1 @md/content:grid-cols-3">
       <Toolbar>
         {#snippet leadingActions()}
           {#if !userSettings.leadingPane?.open}
@@ -40,7 +40,7 @@
           {/each}
         </div>
       </main>
-      <aside class="aside bg-amber-100 p-2">
+      <aside class="aside bg-amber-100 p-2 m-2 rounded-sm">
         <p class="text-xs text-gray-500">aside</p>
       </aside>
     </div>
@@ -58,8 +58,6 @@
     'app-bar app-bar app-bar' 
     'content-container content-container content-container';
 
-
-    /* variant */
     @variant md { 
       grid-template-areas:
         'app-bar app-bar app-bar' 
@@ -69,6 +67,7 @@
 
   .content-container {
     grid-area: content-container;
+    max-height: calc(100vh - var(--app-bar-height));
   }
 
   .content {
