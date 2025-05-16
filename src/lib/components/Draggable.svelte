@@ -1,6 +1,7 @@
 <script lang="ts">
-  import { throttle } from "$lib/utils/throttle";
-
+  import { onDestroy } from 'svelte';
+  import { throttleRAF } from '$lib/utils/throttle';
+  import { browser } from '$app/environment';
   /**
    * Create a resizable panel by adding this component inside a relative positioned element 
    * and pass the 'side' you want to add the drag handle to. Use bindable 'width' to set parent size.
@@ -31,39 +32,48 @@
 
   let dragHandle: HTMLDivElement | undefined = $state();
   let parent = $derived(dragHandle?.parentElement);
-  const throttleTime = 25;
+  let parentRect: DOMRect | undefined;
+
+  const onPointerMove = (e: PointerEvent) => {
+    if (disabled || !parentRect) {
+      return;
+    }
+
+    const start = side === 'right' ? parentRect?.left : parentRect?.right;
+    const distanceFromStart = Math.round(
+      side === 'right' ? e.clientX - start : start - e.clientX
+    );
+
+    if (collapseWidth && distanceFromStart < collapseWidth) {
+      onCollapseWidth?.();
+      return;
+    }
+
+    width = Math.round(Math.min(Math.max(distanceFromStart, minWidth), maxWidth));
+  };
+
+  const throttledOnPointerMove = throttleRAF(onPointerMove);
 
   function handlePointerDown(e: PointerEvent) {
     e.preventDefault();
     isDragging = true;
-
-    const onPointerMove = (e: PointerEvent) => {
-      if (disabled || !parent) {
-        return;
-      }
-
-      const parentRect = parent.getBoundingClientRect();
-      const parentStart = side === 'right' ? parentRect?.left : parentRect?.right;
-      const distance = Math.round(side === 'right' ? e.clientX - parentStart : parentStart - e.clientX);
-
-      if (collapseWidth && distance < collapseWidth) {
-        onCollapseWidth?.();
-        return;
-      }
-      width = Math.round(Math.min(Math.max(distance, minWidth), maxWidth));
-    };
-
-    const onPointerUp = () => {
-      document.removeEventListener('pointermove', throttledOnPointerMove);
-      isDragging = false;
-      onDragEnd?.();
-    };
-
-    const throttledOnPointerMove = throttle(onPointerMove, throttleTime);
+    parentRect = parent?.getBoundingClientRect();
 
     document.addEventListener('pointermove', throttledOnPointerMove);
     document.addEventListener('pointerup', onPointerUp, { once: true });
   }
+
+  function onPointerUp() {
+    document.removeEventListener('pointermove', throttledOnPointerMove);
+    isDragging = false;
+    onDragEnd?.();
+  }
+
+  onDestroy(() => {
+    if (browser) {
+      document.removeEventListener('pointermove', throttledOnPointerMove);
+    }
+  });
 </script>
 
 <!-- https://www.w3.org/WAI/ARIA/apg/patterns/windowsplitter/ -->
@@ -74,7 +84,7 @@
     'draggable-btn absolute h-full w-4 cursor-col-resize top-0 -mx-2', 
     side === 'left' ? 'left-0' : 'right-0',
     disabled && 'hidden pointer-events-none' 
-    ]}
+  ]}
   tabindex="0"
   aria-label="resize me"
   role="slider"

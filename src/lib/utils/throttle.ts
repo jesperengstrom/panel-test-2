@@ -19,3 +19,17 @@ export function throttle(callback: Function, limit: number) {
     }
   };
 };
+
+export function throttleRAF(callback: (...args: any[]) => void) {
+  let ticking = false;
+
+  return function (...args: any[]) {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(() => {
+        callback(...args);
+        ticking = false;
+      });
+    }
+  };
+}

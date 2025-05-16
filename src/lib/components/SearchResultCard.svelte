@@ -4,7 +4,9 @@
   const { id } = $props();
   const link = $derived.by(() => {
     const params = new URLSearchParams(page.url.searchParams);
-    params.append('preview', id);
+    if (!params.getAll('preview').includes(id.toString())) {
+      params.append('preview', id);
+    }
     return '/?' + params.toString();
   });
 </script>
