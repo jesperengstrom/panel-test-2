@@ -10,18 +10,21 @@ let { leadingActions, trailingActions }: ToolbarProps = $props();
 </script>
 
 <nav class="toolbar bg-white border border-gray-200 border-r-0">
-  <!-- <span class="text-xs text-gray-500 float-end">toolbar</span> -->
-  <ul class="grid p-2">
-    {#if leadingActions}
-      <li class="justify-self-start">
+  <ul class="grid grid-cols-2 grid-rows-1 items-center h-full p-2">
+    <li class="justify-self-start">
+      {#if leadingActions}
         {@render leadingActions()}
-      </li>
-    {/if}
-    {#if trailingActions}
-      <li class="justify-self-end">
+      {:else}
+        <p class="text-xs text-gray-500">toolbar</p>
+      {/if}
+    </li>
+    <li class="justify-self-end">
+      {#if trailingActions}
         {@render trailingActions()}
-      </li>
-    {/if}
+      {:else}
+        <p class="text-xs text-gray-500">toolbar</p>
+      {/if}
+    </li>
   </ul>
 </nav>
 

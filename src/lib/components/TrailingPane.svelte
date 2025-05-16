@@ -24,7 +24,7 @@
   <Toolbar>
     {#snippet trailingActions()}
     <a href={removeLink} class="block ml-auto">
-      <div class="size-4">❌</div>
+      <span>❌</span>
     </a>
     {/snippet}
   </Toolbar>

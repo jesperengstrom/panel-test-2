@@ -14,6 +14,11 @@
     { id: 15777 },
     { id: 67867 },
     { id: 23537 },
+    { id: 56540 },
+    { id: 97665 },
+    { id: 18568 },
+    { id: 73567 },
+    { id: 85343 },
   ]
 
 </script>
@@ -21,17 +26,17 @@
 <div class="app grid min-h-screen max-w-screen overflow-x-hidden">
   <AppBar />
   <LeadingPane />
-  <section class="@container/content content-container grid overflow-hidden bg-white">
-    <div class="content grid h-full overflow-x-auto grid-cols-1 @md/content:grid-cols-3">
-      <Toolbar>
-        {#snippet leadingActions()}
-          {#if !userSettings.leadingPane?.open}
-            <button class="hidden md:block" in:fade={{ duration: 200 }} onclick={() => userSettings.toggleLeadingPane()}>➡️</button>
-          {/if}
-        {/snippet}
-      </Toolbar>
-      <main class="main p-2">
-        <div class="flex flex-col gap-2 items-start">
+  <section class="content @container/content flex flex-col bg-white">
+    <Toolbar>
+      {#snippet leadingActions()}
+        {#if !userSettings.leadingPane?.open}
+          <button class="hidden md:block" in:fade={{ duration: 200 }} onclick={() => userSettings.toggleLeadingPane()}>➡️</button>
+        {/if}
+      {/snippet}
+    </Toolbar>
+    <div class="flex flex-col overflow-x-auto gap-4 @5xl/content:flex-row">
+      <main class="main flex-1">
+        <div class="flex flex-col gap-2 items-start p-2">
           <span class="text-xs text-gray-500">
             main
           </span>
@@ -40,8 +45,10 @@
           {/each}
         </div>
       </main>
-      <aside class="aside bg-amber-100 p-2 m-2 rounded-sm">
-        <p class="text-xs text-gray-500">aside</p>
+      <aside class="aside sticky top-0 p-2">
+        <div class="bg-amber-100 h-full p-2 rounded-sm">
+          <p class="text-xs text-gray-500">aside</p>
+        </div>
       </aside>
     </div>
   </section>
@@ -55,43 +62,20 @@
     grid-template-rows: var(--app-bar-height) auto;
     grid-template-columns: minmax(0px, min-content) auto minmax(0px, min-content);
     grid-template-areas:
-    'app-bar app-bar app-bar' 
-    'content-container content-container content-container';
-
-    @variant md { 
-      grid-template-areas:
-        'app-bar app-bar app-bar' 
-        'leading-pane content-container trailing-panes';
-    }
+      'app-bar app-bar app-bar' 
+      'leading-pane content trailing-panes';
   }
-
-  .content-container {
-    grid-area: content-container;
+  
+  .content {
+    grid-area: content;
     max-height: calc(100vh - var(--app-bar-height));
   }
 
-  .content {
-    grid-template-columns: repeat(1, minmax(0, 1fr));
-    grid-template-rows: var(--toolbar-height) auto minmax(var(--aside-height), auto);
-    grid-template-areas: 
-    'toolbar'
-    'main'
-    'aside';
-    
-    @variant @5xl/content {
-      grid-template-columns: 1fr var(--aside-width);
-      grid-template-rows: var(--toolbar-height) auto;
-      grid-template-areas: 
-      'toolbar toolbar'
-      'main aside';
-    }
-  }
-
   .main {
-    grid-area: main;
   }
 
   .aside {
-    grid-area: aside;
+    min-width: var(--aside-width);
+    min-height: var(--aside-height);
   }
 </style>
