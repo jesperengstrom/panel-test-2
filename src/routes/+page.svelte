@@ -1,112 +1,81 @@
 <script>
-  import { page } from "$app/state";
+  import AppBar from "$lib/components/AppBar.svelte";
   import Toolbar from "$lib/components/Toolbar.svelte";
+  import LeadingPane from "$lib/components/LeadingPane.svelte";
+  import TrailingPanes from "$lib/components/TrailingPanes.svelte";
+  import { getUserSettings } from "$lib/contexts/userSettings";
+  import { fade } from "svelte/transition";
+  import SearchResultCard from "$lib/components/SearchResultCard.svelte";
 
-  let leadingPaneClosed = $state(false);
-  let leadingPaneWidth = $derived(leadingPaneClosed ? 0 : 250);
+  const userSettings = getUserSettings();
+  const searchResults = [
+    { id: 43434 },
+    { id: 34534 },
+    { id: 15777 },
+    { id: 67867 },
+    { id: 23537 },
+    { id: 56540 },
+    { id: 97665 },
+    { id: 18568 },
+    { id: 73567 },
+    { id: 85343 },
+  ]
 
-  const trailingPaneWidth = $derived.by(() => {
-    let numberOfTrailingPanes = page.url.searchParams.getAll('preview').length;
-    return 250 * numberOfTrailingPanes;
-  })
 </script>
 
-<div class="app grid min-h-screen max-w-screen overflow-x-hidden transition-all"
-  style={`grid-template-columns: ${leadingPaneWidth}px auto ${trailingPaneWidth}px`}>
-  <header class="header bg-green-100">appBar</header>
-  <section class="leading-pane relative overflow-x-hidden overflow-y-scroll hidden md:block bg-gray-100">
-    <Toolbar />
-    <div class={['absolute w-full transition-all', leadingPaneClosed ? '-translate-x-full' : 'translate-x-0']}>
-      <p>leading pane</p>
-      <ol class="whitespace-nowrap [&_li]:overflow-hidden [&_li]:overflow-ellipsis">
-        <li>leading paneleading paneleading paneleading paneleading paneleading pane</li>
-        <li>leading paneleading paneleading paneleading paneleading paneleading pane</li>
-        <li>leading paneleading paneleading paneleading paneleading paneleading pane</li>
-        <li>leading paneleading paneleading paneleading paneleading paneleading pane</li>
-        <li>leading paneleading paneleading paneleading paneleading paneleading pane</li>
-        <li>leading paneleading paneleading paneleading paneleading paneleading pane</li>
-      </ol>
-    </div>
-  </section>
-  <section class="@container/content content-container grid bg-yellow-50">
-    <div class="content grid h-full grid-cols-1 @md:grid-cols-3">
-      <Toolbar />
-      <main class="main">
-        <div class="flex flex-col">
-          <a href="/?preview=1">add one right pane</a>
-          <a href="/?preview=1&preview=2">add two right panes</a>
-          <a href="/?preview=1&preview=2&preview=3">add three right panes</a>
-          <a href="/">remove all right panes</a>
-          <button class="flex" onclick={() => leadingPaneClosed = !leadingPaneClosed}>Close left pane</button>
+<div class="app grid min-h-screen max-w-screen overflow-x-hidden">
+  <AppBar />
+  <LeadingPane />
+  <section class="content @container/content flex flex-col bg-white">
+    <Toolbar>
+      {#snippet leadingActions()}
+        {#if !userSettings.leadingPane?.open}
+          <button class="hidden md:block" in:fade={{ duration: 200 }} onclick={() => userSettings.toggleLeadingPane()}>➡️</button>
+        {/if}
+      {/snippet}
+    </Toolbar>
+    <div class="flex flex-col overflow-x-auto gap-4 @5xl/content:flex-row">
+      <main class="main flex-1">
+        <div class="flex flex-col gap-2 items-start p-2">
+          <span class="text-xs text-gray-500">
+            main
+          </span>
+          {#each searchResults as searchResult}
+          <SearchResultCard id={searchResult.id} />
+          {/each}
         </div>
-        main
       </main>
-      <aside class="aside bg-amber-100">aside</aside>
+      <aside class="aside sticky top-0 p-2">
+        <div class="bg-amber-100 h-full p-2 rounded-sm">
+          <p class="text-xs text-gray-500">aside</p>
+        </div>
+      </aside>
     </div>
   </section>
-  <section class="trailing-panes hidden md:block bg-blue-50 grid-col">
-    <Toolbar />
-    trailing panes
-  </section>
+  <TrailingPanes />
 </div>
 
 <style>
   @import 'tailwindcss';
 
   .app {
-    grid-template-areas:
-    'header header header' 
-    'content-container content-container content-container';
-
     grid-template-rows: var(--app-bar-height) auto;
-
-    /* variant */
-    @variant md { 
-      grid-template-areas:
-        'header header header' 
-        'leading-pane content-container trailing-panes';
-    }
+    grid-template-columns: minmax(0px, min-content) auto minmax(0px, min-content);
+    grid-template-areas:
+      'app-bar app-bar app-bar' 
+      'leading-pane content trailing-panes';
   }
-
-  .header {
-    grid-area: header;
-  }
-
-  .leading-pane {
-    grid-area: leading-pane;
-  }
-
-  .content-container {
-    grid-area: content-container;
-  }
-
+  
   .content {
-    grid-template-columns: 1fr 1fr var(--aside-width);
-    grid-template-rows: var(--toolbar-height) 1fr 1fr;
-    grid-template-areas: 
-      'toolbar toolbar toolbar'
-      'main main main'
-      'aside aside aside';
-
-    @variant @5xl {
-      grid-template-areas: 
-      'toolbar toolbar toolbar'
-      'main main aside'
-      'main main aside';
-
-    }
-    
-  }
-
-  .trailing-panes {
-    grid-area: trailing-panes;
+    grid-area: content;
+    max-height: calc(100vh - var(--app-bar-height));
   }
 
   .main {
-    grid-area: main;
   }
 
   .aside {
-    grid-area: aside;
+    min-width: var(--aside-width);
+    min-height: var(--aside-height);
   }
 </style>
