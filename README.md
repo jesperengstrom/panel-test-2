@@ -7,3 +7,4 @@ POC layout featuring
 * Dynamic number of resizable, scrollable trailing panes
 
 ## TODO
+* Keyboard navigation
