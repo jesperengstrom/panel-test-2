@@ -13,10 +13,6 @@
   function onDragEnd() {
     userSettings.setLeadingPaneWidth(width);
   }
-
-  function onCollapseWidth() {
-    userSettings.toggleLeadingPane();
-  }
 </script>
 
 <section class={[
@@ -34,7 +30,11 @@
     style="width:{width}px">
     <Toolbar>
       {#snippet trailingActions()}
-        <button id="close-leading-pane-btn" onclick={() => userSettings.toggleLeadingPane()}>⬅️</button>
+        <button 
+          id="close-leading-pane-btn" 
+          onclick={() => userSettings.closeLeadingPane()}>
+            ⬅️
+        </button>
       {/snippet}
     </Toolbar>
     <div class="pr-1.5 overflow-hidden">
@@ -50,11 +50,12 @@
       side="right"
       minWidth={LEADING_PANE_MIN_WIDTH}
       maxWidth={LEADING_PANE_MAX_WIDTH}
-      collapseWidth={LEADING_PANE_COLLAPSE_WIDTH}
       bind:isDragging
       disabled={!paneOpen}
       {onDragEnd}
-      {onCollapseWidth}
+      collapseWidth={LEADING_PANE_COLLAPSE_WIDTH}
+      collapseHandler={() => userSettings.closeLeadingPane()}
+      expandHandler={() => userSettings.openLeadingPane()}
     />
   </div>
 </section>

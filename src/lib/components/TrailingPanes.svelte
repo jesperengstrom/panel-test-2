@@ -2,12 +2,12 @@
   import { page } from "$app/state";
   import TrailingPane from "./TrailingPane.svelte";
 
-  const trailingPanes = $derived(page.url.searchParams.getAll('preview'));
+  const trailingPanes = $derived(page.url.searchParams.getAll('preview').reverse());
   const MAX_TRAILING_PANES = 3;
 </script>
 
 <section class="trailing-panes hidden md:flex">
-  {#each trailingPanes as trailingPane, index (index)}
+  {#each trailingPanes as trailingPane, index (trailingPane)}
     {#if index < MAX_TRAILING_PANES }
       <TrailingPane id={trailingPane} />
     {/if}

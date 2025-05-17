@@ -11,11 +11,12 @@
     side: 'left' | 'right'
     minWidth?: number;
     maxWidth?: number;
-    collapseWidth?: number;
     isDragging?: boolean;
     disabled?: boolean;
     onDragEnd?: () => void;
-    onCollapseWidth?: () => void;
+    collapseWidth?: number;
+    collapseHandler?: () => void;
+    expandHandler?: () => void;
   }
 
   let { 
@@ -27,15 +28,18 @@
     side = 'right',
     disabled = false,
     onDragEnd,
-    onCollapseWidth
+    collapseHandler,
+    expandHandler,
   }: DraggableProps = $props();
 
   let dragHandle: HTMLDivElement | undefined = $state();
   let parent = $derived(dragHandle?.parentElement);
   let parentRect: DOMRect | undefined;
 
+  let collapsedWhileDragging = false;
+
   const onPointerMove = (e: PointerEvent) => {
-    if (disabled || !parentRect) {
+    if ((disabled && !collapsedWhileDragging) || !parentRect) {
       return;
     }
 
@@ -44,9 +48,19 @@
       side === 'right' ? e.clientX - start : start - e.clientX
     );
 
+    // collapse panel if under collapse threshold
     if (collapseWidth && distanceFromStart < collapseWidth) {
-      onCollapseWidth?.();
+      if (!collapsedWhileDragging) {
+        collapsedWhileDragging = true;
+        collapseHandler?.();
+      }
       return;
+    }
+
+    // reopen if over threshold again during the same drag session
+    if (collapseWidth && collapsedWhileDragging && distanceFromStart > collapseWidth) {
+      expandHandler?.();
+      collapsedWhileDragging = false;
     }
 
     width = Math.round(Math.min(Math.max(distanceFromStart, minWidth), maxWidth));
@@ -57,6 +71,7 @@
   function handlePointerDown(e: PointerEvent) {
     e.preventDefault();
     isDragging = true;
+    collapsedWhileDragging = false;
     parentRect = parent?.getBoundingClientRect();
 
     document.addEventListener('pointermove', throttledOnPointerMove);

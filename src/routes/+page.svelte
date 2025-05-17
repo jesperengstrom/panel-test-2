@@ -34,7 +34,7 @@
             id="open-leading-pane-btn"   
             class="hidden md:block" 
             in:fade={{ duration: 200 }} 
-            onclick={() => userSettings.toggleLeadingPane()}>
+            onclick={() => userSettings.openLeadingPane()}>
             ➡️
           </button>
         {/if}

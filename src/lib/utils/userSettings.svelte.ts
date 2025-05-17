@@ -47,30 +47,20 @@ export class UserSettings {
 		this.update('leadingPane', leadingPane);
 	}
 
-	// setRightPaneWidth(width: number) {
-	// 	const rightPane = { ...this.settings?.rightPane };
-	// 	rightPane.width = width;
-	// 	this.update('rightPane', rightPane);
-	// }
-
-	toggleLeadingPane() {
-		const newState = !this.settings?.leadingPane?.open
+	closeLeadingPane() {
 		const leadingPane = { ...this.settings?.leadingPane };
-		leadingPane.open = newState;
+		leadingPane.open = false;
 		this.update('leadingPane', leadingPane);
 	}
 
-	// setRightPaneOpen(open: boolean) {
-	// 	const rightPane = { ...this.settings?.rightPane };
-	// 	rightPane.open = open;
-	// 	this.update('rightPane', rightPane);
-	// }
+	openLeadingPane() {
+		const leadingPane = { ...this.settings?.leadingPane };
+		leadingPane.open = true;
+		this.update('leadingPane', leadingPane);
+	}
+
 
 	get leadingPane() {
 		return this.settings?.leadingPane;
 	}
-
-	// get rightPane() {
-	// 	return this.settings?.rightPane;
-	// }
 }
